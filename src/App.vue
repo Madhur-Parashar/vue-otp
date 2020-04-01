@@ -1,11 +1,11 @@
 <template>
   <div id='app'>
-    <OTP :inputColumn='5' userEmail='madhur@xyz.com'></OTP>
+    <OTP :inputKeys='4'>Please enter the verification code send to madhur@xyz.com</OTP>
   </div>
 </template>
 
 <script>
-import OTP from './components/OTP/otp.vue'
+import OTP from './components/otp/otp.vue'
 export default {
   name: 'app',
   data () {
