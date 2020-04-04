@@ -21,6 +21,9 @@
         />
       </template>
     </div>
+    <div class="otp-screen__error-msg">
+      {{errorMessage}}
+    </div>
     <div class="otp-screen__resend-btn">
       <a href="" @click.prevent="resendHandler">Reset</a>
     </div>
@@ -35,6 +38,7 @@ export default {
   data () {
     return {
       otp: {},
+      errorMessage:''
     }
   },
   mounted () {
@@ -75,6 +79,7 @@ export default {
 
     // geting user input
     userInput (index, event) {
+      this.errorMessage ='';
       // check for backspace || arrowleft key enter and move back the focus
       if (event.key === 'Backspace'  || event.key === 'ArrowLeft' || event.key === 'Left') {
         this.setFocus(index - 1)
@@ -135,10 +140,15 @@ export default {
 
       //validate otp, 
       this.validateOtpFromBackend().then((passkey)=>{
-          if(passkey===enteredOtp)
-          window.open('https://github.com/Madhur-Parashar/vue-otp')
-          else
-          console.log('Err')
+          if(passkey===enteredOtp){
+            window.open('https://github.com/Madhur-Parashar/vue-otp')
+          }
+          
+          else{
+            console.log('Err');
+            this.errorMessage = 'Please enter the correct code'
+          }
+          
       })
       
     },
@@ -187,7 +197,11 @@ export default {
   margin: 8px;
   padding: 8px;
 }
-
+.otp-screen__error-msg{
+   color:red;
+  font-size: 14px;
+  height: 18px;
+}
 .otp-screen__btn{
     margin-top: 32px;
 }

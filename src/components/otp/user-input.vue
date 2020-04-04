@@ -18,10 +18,12 @@
              NEXT
         </button>
     </div>
+    <div v-if="!showError" class="user-password">
+        Your password is {{password}}
     </div>
-   
+    </div>
     <div v-else>
-      <OTP :keys="inputkey">Please enter the verification code send to madhur@xyz.com</OTP>
+      <OTP :keys="inputkey">Please enter the verification code</OTP>
      </div>
   </div>
 </template>
@@ -51,6 +53,17 @@ export default {
     handleNext(){
       this.next = false;
     }
+  },
+  computed:{
+      password(){
+          let password = []
+          if(!isNaN(Number(this.inputkey))){
+              for(let i=0;i<Number(this.inputkey);i++){
+                  password.push(i+1)
+              }
+            return Number(password.join(''));
+          }
+      }
   }
 }
 </script>
@@ -102,6 +115,11 @@ padding-right: 42px;
   .user-input__btn{
     margin-top: 16px;
     }
+.user-password{
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 16px;
+}
 .user-input__submit-btn{
     border: 1px solid rgba(36, 13, 231, 0.5);
     border-radius: 16px;
