@@ -22,7 +22,7 @@
       </template>
     </div>
     <div class="otp-screen__resend-btn">
-      <a href="" @click.prevent="resendHandler">Resend</a>
+      <a href="" @click.prevent="resendHandler">Reset</a>
     </div>
     <div class="otp-screen__btn">
       <button class="otp-screen__submit-btn" @click="submitOTPHandler" :disabled="isDisable">SUBMIT</button>
@@ -34,16 +34,15 @@ import Vue from 'vue'
 export default {
   data () {
     return {
-      otp: {}
+      otp: {},
     }
   },
   mounted () {
-    console.log(this.inputKeys)
-    this.resetOTP()
+    this.resetOTP();
   },
   props: {
-    inputKeys: {
-      type: Number,
+    keys: {
+      type: String,
       required: true
     },
   },
@@ -53,17 +52,39 @@ export default {
         if (this.otp[key] === '' || isNaN(this.otp[key])) return true
       }
       return false
+    },
+    inputKeys (){
+      if(Number(this.keys)< 1 || Number(this.keys)>6 ){
+        return Number(4)
+      }
+      else{
+      return Number(this.keys)
     }
+    }
+    
   },
   methods: {
+
+    // creating input keys based on inputKeys prop passed and set it to ''
+    resetOTP () {
+      for (let i = 0; i < this.inputKeys; i++) {
+        Vue.set(this.otp, `inputkey${i}`, '')
+      }
+      this.setFocus(0)
+    },
+
+    // geting user input
     userInput (index, event) {
-      
-      console.log(this.otp[`inputkey${index}`])
+      // check for backspace || arrowleft key enter and move back the focus
       if (event.key === 'Backspace'  || event.key === 'ArrowLeft' || event.key === 'Left') {
         this.setFocus(index - 1)
-        return
+        return;
       }
+
+      // validate for input key as number 
       if (this.isValidInput(index, event)) {
+
+        // if input number is greater than 1 than shift other keys 
         if (this.otp[`inputkey${index}`].toString().split('').length > 1) {
           this.shiftOtherDigitToForward(index)
         } else {
@@ -71,35 +92,48 @@ export default {
         }
       }
     },
+
     isValidInput (index, evt) {
       const pattern = /^[0-9]+$/
       return evt.key.match(pattern) ? true : false
     },
+
+    resendHandler () {
+      this.resetOTP()
+    },
+
+    //  adjusting the input key to next key column
     shiftOtherDigitToForward (index) {
       const inputs = this.otp[`inputkey${index}`].toString().split('')
       let inputIndex = 0
       for (let i = index; i < this.inputKeys; i++) {
+        if(!isNaN(Number(inputs[inputIndex]))){
         Vue.set(this.otp, `inputkey${i}`, Number(inputs[inputIndex]))
         inputIndex++
+        }
       }
       index + inputs.length > this.inputKeys
         ? this.setFocus(this.inputKeys - 1)
         : this.setFocus(index + inputs.length - 1)
     },
 
+    // setting up the focus
     setFocus (index) {
       index >= 0 && index < this.inputKeys
         ? this.$nextTick(this.$refs['inputkey' + index][0].focus())
         : null
     },
+
+    // creating password from number of inputkeys
     submitOTPHandler () {
       const formattedOtp = [];
       let enteredOtp;
       for (const key in this.otp) {
         formattedOtp.push(this.otp[key])
       }
-      console.log(Number(formattedOtp.join('')));
       enteredOtp = Number(formattedOtp.join(''));
+
+      //validate otp, 
       this.validateOtpFromBackend().then((passkey)=>{
           if(passkey===enteredOtp)
           window.open('https://github.com/Madhur-Parashar/vue-otp')
@@ -108,21 +142,14 @@ export default {
       })
       
     },
-    resendHandler () {
-      this.resetOTP()
-    },
-    resetOTP () {
-      for (let i = 0; i < this.inputKeys; i++) {
-        Vue.set(this.otp, `inputkey${i}`, '')
-      }
-      this.setFocus(0)
-    },
+    
+    // in place of validateOtpFromBackend method, we can also call API which give correct password
+    // here we are creating password from number of inputkeys
     async validateOtpFromBackend(){
         let passkey=[]
         for(let i=1;i<=this.inputKeys;i++){
             passkey.push(i);
         }
-       console.log(Number(passkey.join('')));
       return Promise.resolve(Number(passkey.join('')))
 
     }
@@ -169,7 +196,7 @@ export default {
     border-radius: 16px;
     font-size: 18px;
     font-weight: 500;
-    background: rgb(8, 45, 237);
+    background-color: #2874f0;
     color: #fff;
     padding: 8px;
     box-shadow: 2px 4px 7px 0 rgba(0, 0, 0, 0.1);
@@ -200,7 +227,8 @@ input[type="number"] {
 }
  @media screen and (max-width: 768px) {
     .otp-screen__inputs-row input {
-          width: 32px;
+          width: 22px;
+          font-size: 32px;
     }
     .otp-screen__btn{
     position: fixed;

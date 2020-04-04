@@ -1,21 +1,18 @@
 <template>
   <div id='app'>
-    <OTP :inputKeys='4'>Please enter the verification code send to madhur@xyz.com</OTP>
+    <UserInput></UserInput>
   </div>
 </template>
 
 <script>
-import OTP from './components/otp/otp.vue'
+
+import UserInput from "./components/otp/user-input.vue"
 export default {
   name: 'app',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
-  },
+
   components: {
-    OTP
-  }
+    UserInput
+  },
 }
 </script>
 
@@ -26,7 +23,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin: 0;
+  padding: 0;
 }
+
 
 </style>
