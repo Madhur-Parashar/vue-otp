@@ -12,8 +12,10 @@
     <div class="error-msg">{{showError}}</div>
     <div class="user-input__btn">
         <button 
+            type="number"
             @click="handleNext" 
             :disabled="showError!==''" 
+            v-on:keyup.enter="showError=='' && handleNext()"
             class="user-input__submit-btn">
              NEXT
         </button>

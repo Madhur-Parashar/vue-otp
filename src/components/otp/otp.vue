@@ -256,7 +256,10 @@ input[type="number"] {
     padding-top: 16px;
     }
 .otp-screen {
- margin-top: 30px;
+ margin-top: 24px;
+}
+.otp-screen__sub--text{
+    margin: 16px 0;
 }
 }
 </style>
