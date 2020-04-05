@@ -1,24 +1,23 @@
 <template>
-  <div id='app'>
+  <div id="app">
     <UserInput></UserInput>
   </div>
 </template>
 
 <script>
-
-import UserInput from "./components/otp/user-input.vue"
+import UserInput from "./components/otp/user-input.vue";
 export default {
-  name: 'app',
+  name: "app",
 
   components: {
     UserInput
-  },
-}
+  }
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -26,6 +25,4 @@ export default {
   margin: 0;
   padding: 0;
 }
-
-
 </style>
