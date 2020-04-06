@@ -1,7 +1,10 @@
 <template>
   <div class="user-input">
     <div class="app-header">
-      <img class="back-arrow" v-if="!next" @click="next=true" src="../../assets/backarrow.svg">
+      <span v-if="!next" @click="next=true" class="user-input__back-container">
+        <img class="user-input__back-arrow" src="../../assets/backarrow.png">
+        <span class="user-input__back--text">back</span>
+      </span>    
       <span :class="['header-text',{headerTextPadding:!next}]">Vue OTP Screen</span>
     </div>
     <div v-if="next">
@@ -74,18 +77,26 @@ export default {
   box-sizing: border-box;
   display: flex;
 }
-.back-arrow {
-  height: 44px;
-  width: 32px;
-  padding-left: 16px;
-  cursor: pointer;
+.user-input__back-container{
+  display: flex;
+}
+.user-input__back-arrow {
+    height: 24px;
+    width: 24px;
+    padding-left: 8px;
+    align-self: center;
+    cursor: pointer;
+}
+.user-input__back--text{
+    align-self: center;
+    cursor: pointer;
 }
 .header-text {
   align-self: center;
   width: 100%;
 }
 .headerTextPadding {
-  padding-right: 42px;
+  padding-right: 72px
 }
 .error-msg {
   color: red;
