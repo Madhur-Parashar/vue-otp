@@ -1,155 +1,146 @@
 <template>
   <div class="user-input">
     <div class="app-header">
-        <img class="back-arrow" v-if="!next" @click="next=true" src="../../assets/backarrow.svg"/>
-        <span :class="['header-text',{headerTextPadding:!next}]">Vue OTP Screen</span>
+      <img class="back-arrow" v-if="!next" @click="next=true" src="../../assets/backarrow.svg">
+      <span :class="['header-text',{headerTextPadding:!next}]">Vue OTP Screen</span>
     </div>
-    <div v-if="next">  
-    <h3>Please enter number of input keys</h3>
-    <input v-model="inputkey"
-     @input="handleInputChange"
-     onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
-    <div class="error-msg">{{showError}}</div>
-    <div class="user-input__btn">
-        <button 
-            type="number"
-            @click="handleNext" 
-            :disabled="showError!==''" 
-            v-on:keyup.enter="showError=='' && handleNext()"
-            class="user-input__submit-btn">
-             NEXT
-        </button>
-    </div>
-    <div v-if="!showError" class="user-password">
-        Your password is {{password}}
-    </div>
+    <div v-if="next">
+      <h3>Please enter number of input keys</h3>
+      <input
+        type="number"
+        v-model="inputkey"
+        @input="handleInputChange"
+        v-on:keyup.enter="showError=='' && handleNext()"
+        onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+      >
+      <div class="error-msg">{{showError}}</div>
+      <div class="user-input__btn">
+        <button @click="handleNext" :disabled="showError!==''" class="user-input__submit-btn">NEXT</button>
+      </div>
+      <div v-if="!showError" class="user-password">Your password is {{password}}</div>
     </div>
     <div v-else>
       <OTP :keys="inputkey">Please enter the verification code</OTP>
-     </div>
+    </div>
   </div>
 </template>
 
 <script>
-import OTP from './otp.vue';
+import OTP from "./otp.vue";
 export default {
-
-  data () {
+  data() {
     return {
-      inputkey:'4',
-      showError:'',
-      next:true
-    }
+      inputkey: "4",
+      showError: "",
+      next: true
+    };
   },
   components: {
     OTP
   },
-  methods:{
-    handleInputChange(){
-      if(this.inputkey<1 || this.inputkey>6){
-        this.showError = 'Please enter value greater than 0 and less than 7';
-      }else{
-        this.showError =''
+  methods: {
+    handleInputChange() {
+      if (this.inputkey < 1 || this.inputkey > 6) {
+        this.showError = "Please enter value greater than 0 and less than 7";
+      } else {
+        this.showError = "";
       }
     },
-    handleNext(){
+    handleNext() {
       this.next = false;
     }
   },
-  computed:{
-      password(){
-          let password = []
-          if(!isNaN(Number(this.inputkey))){
-              for(let i=0;i<Number(this.inputkey);i++){
-                  password.push(i+1)
-              }
-            return Number(password.join(''));
-          }
+  computed: {
+    password() {
+      let password = [];
+      if (!isNaN(Number(this.inputkey))) {
+        for (let i = 0; i < Number(this.inputkey); i++) {
+          password.push(i + 1);
+        }
+        return Number(password.join(""));
       }
+    }
   }
-}
+};
 </script>
 
 <style scoped>
-.app-header{
-    background-color: #2874f0;
-    height: 48px;
-    color: #fff;
-    font-size: 18px;
-    font-weight: 800;
-    box-sizing: border-box;
-    display: flex;
+.app-header {
+  background-color: #2874f0;
+  height: 48px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+  box-sizing: border-box;
+  display: flex;
 }
-.back-arrow{
+.back-arrow {
   height: 44px;
   width: 32px;
   padding-left: 16px;
   cursor: pointer;
-
 }
-.header-text{
-    align-self: center;
-    width: 100%;
-    
+.header-text {
+  align-self: center;
+  width: 100%;
 }
-.headerTextPadding{
-padding-right: 42px;
+.headerTextPadding {
+  padding-right: 42px;
 }
-.error-msg{
-  color:red;
+.error-msg {
+  color: red;
   font-size: 14px;
   margin-top: 16px;
   height: 18px;
 }
-.user-input input{
-    border: 2px solid rgba(0, 0, 0, 0.3);
-    border-radius: 2px 2px 0 0;
-    font-size: 40px;
-    height: 32px;
-    width: 102px;
-    text-align: center;
-    margin: 8px;
-    padding: 8px;
+.user-input input {
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-radius: 2px 2px 0 0;
+  font-size: 40px;
+  height: 32px;
+  width: 102px;
+  text-align: center;
+  margin: 8px;
+  padding: 8px;
 }
 .user-input input:focus {
   outline: unset;
 }
-  .user-input__btn{
-    margin-top: 16px;
-    }
-.user-password{
-    font-size: 16px;
-    font-weight: 500;
-    margin-top: 16px;
+.user-input__btn {
+  margin-top: 16px;
 }
-.user-input__submit-btn{
-    border: 1px solid rgba(36, 13, 231, 0.5);
-    border-radius: 16px;
-    font-size: 18px;
-    font-weight: 500;
-    background-color: #2874f0;
-    color: #fff;
-    padding: 8px;
-    box-shadow: 2px 4px 7px 0 rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    opacity: 1;
+.user-password {
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 16px;
 }
-.user-input__submit-btn:disabled{
-    opacity: 0.3;
-    cursor: unset;
+.user-input__submit-btn {
+  border: 1px solid rgba(36, 13, 231, 0.5);
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 500;
+  background-color: #2874f0;
+  color: #fff;
+  padding: 8px;
+  box-shadow: 2px 4px 7px 0 rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  opacity: 1;
 }
- @media screen and (max-width: 768px) {
-    .user-input__btn{
+.user-input__submit-btn:disabled {
+  opacity: 0.3;
+  cursor: unset;
+}
+@media screen and (max-width: 768px) {
+  .user-input__btn {
     position: fixed;
     bottom: 0;
     left: 0;
-    background: linear-gradient(180deg,hsla(0,0%,100%,.3),#fff);
+    background: linear-gradient(180deg, hsla(0, 0%, 100%, 0.3), #fff);
     width: 100%;
     display: flex;
     justify-content: center;
     padding-bottom: 16px;
     padding-top: 16px;
-    }
-
+  }
 }
 </style>
